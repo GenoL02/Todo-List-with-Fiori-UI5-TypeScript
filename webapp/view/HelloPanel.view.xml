@@ -24,6 +24,7 @@
                 valueLiveUpdate="true"
                 width="60%"
                 placeholder="{i18n>inputPlaceholder}"
+                change=".onOpenDialog"
             />
             <FormattedText
                 htmlText="{view>/newTodo}"
