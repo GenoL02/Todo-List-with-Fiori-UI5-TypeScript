@@ -16,12 +16,14 @@ import Dialog from "sap/m/Dialog";
  */
 export default class App extends Controller {
   private dialog: Dialog;
+
   async onOpenDialog(): Promise<void> {
     const oViewModel = this.getView()?.getModel("view") as JSONModel;
     const sNewTodo = oViewModel.getProperty("/newTodo")?.trim();
 
     const oModel = this.getView()?.getModel() as JSONModel;
     const aTodos = oModel.getProperty("/recipient/todos") || [];
+    const aCurTodos = oModel.getProperty("/recipient/currentTodos") || [];
     if (!sNewTodo) {
       console.log("error: newTodo is empty");
       console.log("New Todo:", sNewTodo);
@@ -32,7 +34,9 @@ export default class App extends Controller {
       console.log("Todos List Before:", aTodos);
       aTodos.push({ title: sNewTodo, completed: false });
       oModel.setProperty("/recipient/todos", aTodos);
+      oModel.setProperty("/recipient/currentTodos", aCurTodos);
       oViewModel.setProperty("/newTodo", "");
+      this.onFilterAll();
       this.dialog ??= (await this.loadFragment({
         name: "ui5.view.HelloDialog",
       })) as Dialog;
@@ -44,6 +48,35 @@ export default class App extends Controller {
     // is only called from within the loaded dialog itself.
     (this.byId("helloDialog") as Dialog)?.close();
   }
+  onCloseCfDialog(): void {
+    // note: We don't need to chain to the pDialog promise, since this event-handler
+    // is only called from within the loaded dialog itself.
+    (this.byId("comfirmDialog") as Dialog)?.close();
+  }
+  onFilterAll(): void {
+    const oModel = this.getView()?.getModel() as JSONModel;
+    const aTodos = oModel.getProperty("/recipient/todos") || [];
+    // Hiển thị tất cả các todo
+    oModel.setProperty("/recipient/currentTodos", aTodos);
+    console.log("All Todos:", aTodos);
+  }
+  onFilterActive(): void {
+    const oModel = this.getView()?.getModel() as JSONModel;
+    const aTodos = oModel.getProperty("/recipient/todos") || [];
+    // Lọc các todo chưa hoàn thành
+    const aActiveTodos = aTodos.filter((todo: any) => !todo.completed);
+    oModel.setProperty("/recipient/currentTodos", aActiveTodos);
+    console.log("Active Todos:", aActiveTodos);
+  }
+  onFilterCompleted(): void {
+    const oModel = this.getView()?.getModel() as JSONModel;
+    const aTodos = oModel.getProperty("/recipient/todos") || [];
+    // Lọc các todo đã hoàn thành
+    const aCompletedTodos = aTodos.filter((todo: any) => todo.completed);
+    oModel.setProperty("/recipient/currentTodos", aCompletedTodos);
+    console.log("Completed Todos:", aCompletedTodos);
+  }
+
   public onToggleCompleted(oEvent: Event): void {
     const oCheckbox = oEvent.getSource() as CheckBox;
     const bSelected = oCheckbox.getSelected();
@@ -61,11 +94,9 @@ export default class App extends Controller {
       const oModel = (this.getView() as View).getModel() as JSONModel;
       oModel.setProperty(sPath + "/completed", bSelected);
       console.log("Checkbox selected:", bSelected);
-      console.log("Checkbox path:", sPath);
     }
   }
   onFilter(event: SearchField$SearchEvent): void {
-    console.log("onFilter called");
     // build filter array
     const filter = [];
     const query = event.getParameter("query");
@@ -76,5 +107,26 @@ export default class App extends Controller {
     const list = this.byId("TodoList");
     const binding = list?.getBinding("items") as ListBinding;
     binding?.filter(filter);
+  }
+  async onClearCompleted(): Promise<void> {
+    this.dialog ??= (await this.loadFragment({
+      name: "ui5.view.ComfirmDialog",
+    })) as Dialog;
+    this.dialog.open();
+  }
+  onConfirmDialog(): void {
+    const oModel = this.getView()?.getModel() as JSONModel;
+    const aTodos = oModel.getProperty("/recipient/todos") || [];
+    // Lọc các todo chưa hoàn thành
+    const aRemainingTodos = aTodos.filter((todo: any) => !todo.completed);
+
+    // Cập nhật lại danh sách todos và currentTodos
+    oModel.setProperty("/recipient/todos", aRemainingTodos);
+    oModel.setProperty("/recipient/currentTodos", aRemainingTodos);
+
+    // Đóng dialog xác nhận
+    this.onCloseCfDialog();
+
+    console.log("Remaining Todos:", aRemainingTodos);
   }
 }

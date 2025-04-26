@@ -1,0 +1,28 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Dialog
+        id="comfirmDialog"
+        title="{i18n>comfirmDialogTitle}"
+    >
+        <FormattedText
+            htmlText="{i18n>comfirmMessage}"
+            class="sapUiSmallMargin sapThemeHighlight-asColor"
+        />
+        <beginButton>
+            <Button
+                text="{i18n>dialogConfirmButtonText}"
+                press=".onConfirmDialog"
+                type="Accept"
+            />
+        </beginButton>
+        <endButton>
+            <Button
+                text="{i18n>dialogCloseButtonText}"
+                press=".onCloseCfDialog"
+                type="Back"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

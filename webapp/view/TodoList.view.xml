@@ -9,7 +9,7 @@
         class="sapUiResponsiveMargin"
         width="auto"
         items="{
-            path: '/recipient/todos'
+            path: '/recipient/currentTodos'
         }"
     >
         <headerToolbar>
@@ -19,6 +19,30 @@
                 <SearchField
                     width="30%"
                     search=".onFilter"
+                />
+                <SegmentedButton selectionChange=".onFilterChange">
+                    <Button
+                        text="All"
+                        type="Emphasized"
+                        press=".onFilterAll"
+                    />
+                    <Button
+                        text="Active"
+                        type="Emphasized"
+                        press=".onFilterActive"
+                    />
+                    <Button
+                        text="Completed"
+                        type="Emphasized"
+                        press=".onFilterCompleted"
+                    />
+                </SegmentedButton>
+                <Button
+                    icon="sap-icon://delete"
+                    text="Clear completed"
+                    type="Transparent"
+                    press=".onClearCompleted"
+                    class="sapUiTinyMarginBegin"
                 />
             </Toolbar>
         </headerToolbar>

@@ -19,8 +19,8 @@ export default class Component extends UIComponent {
     // set data model
     const data = {
       recipient: {
-        name: "World",
         todos: [], // todo todo list
+        currentTodos: [], // current todo
       },
     };
     const dataModel = new JSONModel(data);

@@ -4,7 +4,7 @@
 >
     <Dialog
         id="helloDialog"
-        title="Hello {/recipient/name}"
+        title="{i18n>successDialogTitle}"
     >
         <FormattedText
             htmlText="{i18n>successMessage}"
