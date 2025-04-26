@@ -81,15 +81,7 @@ export default class App extends Controller {
     const oCheckbox = oEvent.getSource() as CheckBox;
     const bSelected = oCheckbox.getSelected();
     const sPath = oCheckbox.getBindingContext()?.getPath();
-    const oParent = oCheckbox.getParent() as HBox;
-    const oText = oParent.getItems()[1] as Text;
-    if (oText) {
-      if (bSelected) {
-        oText.addStyleClass("todoStrike");
-      } else {
-        oText.removeStyleClass("todoStrike");
-      }
-    }
+
     if (sPath) {
       const oModel = (this.getView() as View).getModel() as JSONModel;
       oModel.setProperty(sPath + "/completed", bSelected);

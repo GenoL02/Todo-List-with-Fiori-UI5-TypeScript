@@ -16,7 +16,7 @@ html[dir="rtl"] .myAppDemoWT .myCustomButton.sapMBtn {
 .centerText {
   text-align: center;
 }
-.todoStrike {
+
+[data-todo-item-completed="true"] span {
   text-decoration: line-through;
-  color: gray;
 }
