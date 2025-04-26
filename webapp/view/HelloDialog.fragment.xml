@@ -1,0 +1,21 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Dialog
+        id="helloDialog"
+        title="Hello {/recipient/name}"
+    >
+        <FormattedText
+            htmlText="{i18n>successMessage}"
+            class="sapUiSmallMargin sapThemeHighlight-asColor"
+        />
+        <beginButton>
+            <Button
+                text="{i18n>dialogCloseButtonText}"
+                press=".onCloseDialog"
+                type="Emphasized"
+            />
+        </beginButton>
+    </Dialog>
+</core:FragmentDefinition>

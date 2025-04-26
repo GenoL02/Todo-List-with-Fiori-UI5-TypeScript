@@ -1,0 +1,32 @@
+<mvc:View
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    controllerName="ui5.controller.HelloPanel"
+>
+    <List
+        headerText="{i18n>invoiceListTitle}"
+        class="sapUiResponsiveMargin"
+        width="auto"
+        items="{
+            path: '/recipient/todos'
+        }"
+    >
+        <items>
+            <CustomListItem>
+                <HBox
+                    renderType="Bare"
+                    alignItems="Center"
+                >
+                    <CheckBox
+                        selected="{completed}"
+                        select=".onToggleCompleted"
+                    />
+                    <Text
+                        text="{title}"
+                        class="{= ${completed} ? 'todoStrike' : '' }"
+                    />
+                </HBox>
+            </CustomListItem>
+        </items>
+    </List>
+</mvc:View>
